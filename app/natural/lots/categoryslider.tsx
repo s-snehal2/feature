@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface CategorySliderProps {
   title: string;
@@ -12,56 +18,54 @@ interface CategorySliderProps {
 export default function CategorySlider({ title, images }: CategorySliderProps) {
   const [current, setCurrent] = useState(0);
 
-  const prev = () => {
-    setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const next = () => {
-    setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
-
   return (
-    <div className="mb-0 mt-2 w-full ">
+    <div className="mt-2 mb-0 w-full">
       {/* Title */}
-      <h3 className="mb-1 text-sm font-normal md:text-base landscape:md:text-sm text-muted-foreground">
+      <h3 className="mb-1 text-sm font-normal text-muted-foreground md:text-base landscape:md:text-sm">
         {title}
       </h3>
 
-      {/* Fixed Card */}
-      <div className="relative w-full rounded-lg border border-gray-200 bg-gray-100 shadow-sm ">
-        {/* Fixed Height */}
-        <div className="relative h-[230px] w-full sm:h-[300px] md:h-[400px]  landscape:sm:h-[300px] landscape:lg:h-[400px]">
-          {/* Previous Button */}
-          {images.length > 1 && (
-            <button
-              onClick={prev}
-              className="absolute left-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white p-2 shadow-md"
-            >
-              <ChevronLeft size={20} />
-            </button>
-          )}
+      {/* Card */}
+      <div className="relative w-full rounded-lg border border-gray-200 bg-gray-100 shadow-sm">
+        <Carousel
+          opts={{
+            loop: true,
+          }}
+          className="w-full"
+          setApi={(api) => {
+            if (!api) return;
 
-          {/* Image */}
-          <div className=" flex items-center justify-center overflow-hidden rounded-lg p-0">
-            <Image
-              src={images[current]}
-              alt={title}
-              fill
-              className="rounded-lg p-0"
-              priority
-            />
-          </div>
+            setCurrent(api.selectedScrollSnap());
 
-          {/* Next Button */}
+            api.on("select", () => {
+              setCurrent(api.selectedScrollSnap());
+            });
+          }}
+        >
+          <CarouselContent>
+            {images.map((image, index) => (
+              <CarouselItem key={index}>
+                <div className="relative h-[230px] w-full sm:h-[300px] md:h-[400px] landscape:sm:h-[300px] landscape:lg:h-[400px]">
+                  <Image
+                    src={image}
+                    alt={`${title}-${index + 1}`}
+                    fill
+                    priority={index === 0}
+                    className=" rounded-lg"
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
           {images.length > 1 && (
-            <button
-              onClick={next}
-              className="absolute right-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white p-2 shadow-md"
-            >
-              <ChevronRight size={20} />
-            </button>
+            <>
+              <CarouselPrevious className="left-3 z-20 h-10 w-10 border bg-white shadow-md" />
+
+              <CarouselNext className="right-3 z-20 h-10 w-10 border bg-white shadow-md" />
+            </>
           )}
-        </div>
+        </Carousel>
       </div>
 
       {/* Counter */}

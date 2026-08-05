@@ -1,10 +1,16 @@
-// BookMatchSection.tsx
 "use client";
 
 import { useState } from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 
 interface BookMatchSectionProps {
   images: string[];
@@ -19,7 +25,10 @@ interface LayoutItem {
 
 export default function BookMatchSection({ images }: BookMatchSectionProps) {
   const totalSlides = 7;
+
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [api, setApi] = useState<CarouselApi>();
+
   const [rotation, setRotation] = useState<number[]>(images.map(() => 0));
 
   const rotateImage = (index: number) => {
@@ -46,9 +55,9 @@ export default function BookMatchSection({ images }: BookMatchSectionProps) {
     {
       type: "grid4",
       items: [
-        { img: 0, transform: "rotate(180deg) scale(1.2 )scaleX(-1)" },
-        { img: 1, transform: "rotate(180deg) scale(1.2) scaleX(1)" },
-        { img: 2, transform: "rotate(360deg) scale(1.2) scaleX(1)" },
+        { img: 0, transform: "rotate(180deg) scale(1.2) scaleX(-1)" },
+        { img: 1, transform: "rotate(180deg) scale(1.2)" },
+        { img: 2, transform: "rotate(360deg) scale(1.2)" },
         { img: 3, transform: "rotate(360deg) scale(1.2) scaleX(-1)" },
       ],
     },
@@ -56,8 +65,8 @@ export default function BookMatchSection({ images }: BookMatchSectionProps) {
       type: "grid4",
       items: [
         { img: 0, transform: "rotate(180deg) scale(1.2) scaleY(-1)" },
-        { img: 1, transform: "rotate(360deg) scale(1.2) scaleX(1)" },
-        { img: 2, transform: "rotate(180deg) scale(1.2) scaleY(1)" },
+        { img: 1, transform: "rotate(360deg) scale(1.2)" },
+        { img: 2, transform: "rotate(180deg) scale(1.2)" },
         { img: 3, transform: "rotate(360deg) scale(1.2) scaleY(-1)" },
       ],
     },
@@ -84,7 +93,6 @@ export default function BookMatchSection({ images }: BookMatchSectionProps) {
         { img: 1, transform: "rotate(270deg) scale(1.8) scaleX(-1)" },
       ],
     },
-
     {
       type: "interactive",
       items: [
@@ -96,94 +104,112 @@ export default function BookMatchSection({ images }: BookMatchSectionProps) {
     },
   ];
 
-  const layout = slideLayouts[currentSlide];
-
   return (
     <div className="w-full">
       <div className="mb-1 flex items-center justify-between">
-        <h3 className=" text-sm font-normal md:text-base text-muted-foreground">
+        <h3 className="text-sm font-normal text-muted-foreground md:text-base">
           Bookmatches
         </h3>
       </div>
 
-      <Card className="relative rounded-xl p-0 overflow-hidden  h-[230px] w-full sm:h-[300px] md:h-[400px]  landscape:sm:h-[300px] landscape:lg:h-[400px] ">
-        <button
-          onClick={() =>
-            setCurrentSlide(
-              currentSlide === 0 ? totalSlides - 1 : currentSlide - 1,
-            )
-          }
-          className="absolute left-3 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white p-2 shadow"
+      <Card className="overflow-hidden rounded-xl p-0">
+        <Carousel
+          opts={{ loop: true }}
+          setApi={(carouselApi) => {
+            setApi(carouselApi);
+
+            if (!carouselApi) return;
+
+            setCurrentSlide(carouselApi.selectedScrollSnap());
+
+            carouselApi.on("select", () => {
+              setCurrentSlide(carouselApi.selectedScrollSnap());
+            });
+          }}
+          className="w-full"
         >
-          <ChevronLeft size={20} />
-        </button>
+          <CarouselContent>
+            {slideLayouts.map((layout, slideIndex) => (
+              <CarouselItem key={slideIndex}>
+                <div className="h-[230px] w-full sm:h-[300px] md:h-[400px] landscape:sm:h-[300px] landscape:lg:h-[400px]">
+                  {/* ---------- Grid 4 ---------- */}
+                  {layout.type === "grid4" && (
+                    <div className="grid h-full grid-cols-2">
+                      {layout.items.map((item, i) => (
+                        <div
+                          key={i}
+                          className="relative h-full overflow-hidden"
+                        >
+                          <Image
+                            src={images[item.img]}
+                            alt={`Bookmatch ${i + 1}`}
+                            fill
+                            className="w-full p-2 md:p-4 lg:p-4 xl:p-4 landscape:p-3"
+                            style={{
+                              transform: item.transform,
+                              transformOrigin: "center",
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
-        <button
-          onClick={() => setCurrentSlide((currentSlide + 1) % totalSlides)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white p-2 shadow"
-        >
-          <ChevronRight size={20} />
-        </button>
+                  {/* ---------- Grid 2 ---------- */}
+                  {layout.type === "grid2" && (
+                    <div className="grid h-full grid-cols-3">
+                      {layout.items.map((item, i) => (
+                        <div
+                          key={i}
+                          className="relative h-full overflow-hidden"
+                        >
+                          <Image
+                            src={images[item.img]}
+                            alt={`Bookmatch ${i + 1}`}
+                            fill
+                            className="object-contain"
+                            style={{
+                              transform: item.transform,
+                              transformOrigin: "center",
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
-        {layout.type === "grid4" && (
-          <div className="grid h-full  grid-cols-2 ">
-            {layout.items.map((item, i) => (
-              <div
-                key={i}
-                className="relative h-full overflow-hidden  border-none"
-              >
-                <Image
-                  src={images[item.img]}
-                  alt=""
-                  fill
-                  className=" p-2 md:p-4 lg:p-4 xl:p-4 landscape:p-3  w-full"
-                  style={{
-                    transform: item.transform,
-                    transformOrigin: "center",
-                  }}
-                />
-              </div>
+                  {/* ---------- Interactive ---------- */}
+                  {layout.type === "interactive" && (
+                    <div className="grid h-full grid-cols-2">
+                      {layout.items.map((item, i) => (
+                        <div
+                          key={i}
+                          onClick={() => rotateImage(i)}
+                          className="relative h-full cursor-pointer overflow-hidden"
+                        >
+                          <Image
+                            src={images[item.img]}
+                            alt={`Bookmatch ${i + 1}`}
+                            fill
+                            className="object-contain transition-transform duration-500"
+                            style={{
+                              transform: `${item.transform} rotate(${rotation[i]}deg)`,
+                              transformOrigin: "center",
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </CarouselItem>
             ))}
-          </div>
-        )}
+          </CarouselContent>
 
-        {layout.type === "grid2" && (
-          <div className="grid h-full  grid-cols-3 ">
-            {layout.items.map((item, i) => (
-              <div key={i} className="relative h-full overflow-hidden p-0">
-                <Image
-                  src={images[item.img]}
-                  alt=""
-                  fill
-                  className="object-contain w-full"
-                  style={{
-                    transform: item.transform,
-                    transformOrigin: "center",
-                  }}
-                />
-              </div>
-            ))}
-          </div>
-        )}
+          <CarouselPrevious className="left-3 z-20 h-10 w-10 bg-white shadow-md" />
 
-        {layout.type === "interactive" && (
-          <div className="grid h-full grid-cols-2 ">
-            {layout.items.map((item, i) => (
-              <div key={i} className="relative h-full overflow-hidden border">
-                <Image
-                  src={images[item.img]}
-                  alt=""
-                  fill
-                  className="object-contain w-full"
-                  style={{
-                    transform: item.transform,
-                    transformOrigin: "center",
-                  }}
-                />
-              </div>
-            ))}
-          </div>
-        )}
+          <CarouselNext className="right-3 z-20 h-10 w-10 bg-white shadow-md" />
+        </Carousel>
       </Card>
 
       <p className="mt-3 text-center text-sm text-gray-500">

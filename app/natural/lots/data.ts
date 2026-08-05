@@ -3,13 +3,13 @@ export const headerData = [
     lotno: "LM03197",
     productName: "AMAZING GREY",
     shade: "GREY",
-    size: "195 X 134 cm",
-    mm: "18 mm",
-    peice: "92 pcs",
+    size: "195 x 134",
+    mm: "18",
+    peice: "92",
     qty: "2511",
     hold: "0",
     sold: "0",
-    bal: "2511 sqft",
+    bal: "2511",
   },
 ];
 
