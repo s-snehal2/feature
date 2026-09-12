@@ -96,10 +96,10 @@ export default function BookMatchSection({ images }: BookMatchSectionProps) {
     {
       type: "interactive",
       items: [
-        { img: 0, transform: "rotate(180deg) scale(1.5)" },
-        { img: 1, transform: "rotate(0deg) scale(1.5) scaleX(-1)" },
-        { img: 2, transform: "rotate(180deg) scale(1.5) scaleY(-1)" },
-        { img: 3, transform: "rotate(0deg) scale(1.5)" },
+        { img: 0, transform: "rotate(180deg) scale(1.2)" },
+        { img: 1, transform: "rotate(0deg) scale(1.2) scaleX(-1)" },
+        { img: 2, transform: "rotate(180deg) scale(1.2) scaleY(-1)" },
+        { img: 3, transform: "rotate(0deg) scale(1.2)" },
       ],
     },
   ];
@@ -114,10 +114,8 @@ export default function BookMatchSection({ images }: BookMatchSectionProps) {
 
       <Card className="overflow-hidden rounded-xl p-0">
         <Carousel
-          opts={{ loop: true }}
+          opts={{ loop: false }}
           setApi={(carouselApi) => {
-            setApi(carouselApi);
-
             if (!carouselApi) return;
 
             setCurrentSlide(carouselApi.selectedScrollSnap());
@@ -126,7 +124,6 @@ export default function BookMatchSection({ images }: BookMatchSectionProps) {
               setCurrentSlide(carouselApi.selectedScrollSnap());
             });
           }}
-          className="w-full"
         >
           <CarouselContent>
             {slideLayouts.map((layout, slideIndex) => (
@@ -191,7 +188,7 @@ export default function BookMatchSection({ images }: BookMatchSectionProps) {
                             src={images[item.img]}
                             alt={`Bookmatch ${i + 1}`}
                             fill
-                            className="object-contain transition-transform duration-500"
+                            className="w-full p-2 md:p-4 lg:p-4 xl:p-4 landscape:p-3 transition-transform duration-500"
                             style={{
                               transform: `${item.transform} rotate(${rotation[i]}deg)`,
                               transformOrigin: "center",

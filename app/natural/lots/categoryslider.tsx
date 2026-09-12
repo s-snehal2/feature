@@ -28,10 +28,7 @@ export default function CategorySlider({ title, images }: CategorySliderProps) {
       {/* Card */}
       <div className="relative w-full rounded-lg border border-gray-200 bg-gray-100 shadow-sm">
         <Carousel
-          opts={{
-            loop: true,
-          }}
-          className="w-full"
+          opts={{ loop: false }}
           setApi={(api) => {
             if (!api) return;
 
@@ -45,13 +42,13 @@ export default function CategorySlider({ title, images }: CategorySliderProps) {
           <CarouselContent>
             {images.map((image, index) => (
               <CarouselItem key={index}>
-                <div className="relative h-[230px] w-full sm:h-[300px] md:h-[400px] landscape:sm:h-[300px] landscape:lg:h-[400px]">
+                <div className="relative h-[230px] w-full sm:h-[300px] md:h-[400px]   landscape:sm:h-[300px] landscape:lg:h-[400px]">
                   <Image
                     src={image}
                     alt={`${title}-${index + 1}`}
                     fill
                     priority={index === 0}
-                    className=" rounded-lg"
+                    className="rounded-lg"
                   />
                 </div>
               </CarouselItem>
@@ -61,7 +58,6 @@ export default function CategorySlider({ title, images }: CategorySliderProps) {
           {images.length > 1 && (
             <>
               <CarouselPrevious className="left-3 z-20 h-10 w-10 border bg-white shadow-md" />
-
               <CarouselNext className="right-3 z-20 h-10 w-10 border bg-white shadow-md" />
             </>
           )}

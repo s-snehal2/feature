@@ -1,4 +1,5 @@
-import React from "react";
+
+
 import { headerData } from "./data";
 import { Eye, File, Heart } from "lucide-react";
 
@@ -10,13 +11,9 @@ function Header() {
           key={index}
           className="mx-auto max-w-7xl px-3 py-2 sm:px-4 md:px-6"
         >
-          {/* ===================================================== */}
-          {/* Portrait Layout (Default + Desktop) */}
-          {/* ===================================================== */}
-          <div className="block max-lg:landscape:hidden">
-            {/* Product */}
+          <div className="block sm:landscape:hidden md:landscape:hidden xl:landscape:block">
             <div className="flex w-full items-center justify-center text-center">
-              <p className="truncate text-sm font-light sm:text-lg md:text-xl md:landscape:text-2xl">
+              <p className="text-sm font-light sm:text-lg md:text-lg md:landscape:text-xl">
                 <span className="text-foreground">{d.lotno}</span>
 
                 <span className="mx-2 text-muted-foreground">|</span>
@@ -31,7 +28,6 @@ function Header() {
               </p>
             </div>
 
-            {/* Size */}
             <div className="mt-0.5 text-center text-[13px] text-gray-500 sm:text-[15px] md:text-[16px]">
               <span className="font-semibold">{d.size}</span> cms
               <span className="font-normal">&nbsp;|&nbsp;</span>
@@ -40,9 +36,8 @@ function Header() {
               <span className="font-semibold">{d.peice}</span> pcs
             </div>
 
-            {/* Qty */}
-            <div className="mt-0.5 text-center text-[13px] text-gray-500 sm:text-[15px] md:text-[16px]  flex w-full items-center justify-center">
-              <div className="flex gap-2 text-[13px] text-gray-500 sm:text-[15px] font-normal">
+            <div className="relative mt-0.5 flex w-full items-center justify-center text-[13px] text-gray-500 sm:text-[15px] md:text-[16px]">
+              <div className="flex gap-1 text-[13px] font-normal text-gray-500 sm:text-[15px]">
                 <span>
                   Qty: <span className="font-semibold">{d.qty}</span>
                 </span>
@@ -60,7 +55,7 @@ function Header() {
                 </span>
               </div>
 
-              <div className="absolute right-1 md:right-4 flex items-center gap-2 text-gray-500">
+              <div className="absolute right-1 flex items-center gap-1.5 text-gray-500 md:right-4">
                 <Eye size={17} />
                 <File size={17} />
                 <Heart size={17} />
@@ -68,11 +63,7 @@ function Header() {
             </div>
           </div>
 
-          {/* ===================================================== */}
-          {/* Landscape Layout (Mobile + Tablet ONLY) */}
-          {/* ===================================================== */}
-          <div className="hidden max-lg:landscape:block">
-            {/* First Row */}
+          <div className="hidden landscape:block xl:landscape:hidden">
             <div className="flex w-full items-center justify-center text-center">
               <p className="truncate text-sm font-light">
                 <span>{d.lotno}</span>
@@ -87,9 +78,8 @@ function Header() {
               </p>
             </div>
 
-            {/* Second Row */}
             <div className="relative mt-1 flex w-full items-center justify-center">
-              <div className="flex flex-wrap items-center justify-center gap-1.5 lg:gap-0.5 text-[13px] text-gray-500 font-normal">
+              <div className="flex flex-wrap items-center justify-center gap-1.5 text-[13px] font-normal text-gray-500 lg:gap-0.5">
                 <span>
                   <span className="font-semibold">{d.size}</span> cms
                 </span>
@@ -118,6 +108,7 @@ function Header() {
                   Bal: <span className="font-semibold">{d.bal}</span> sqft
                 </span>
               </div>
+
               <div className="absolute right-4 flex items-center gap-2 text-gray-500">
                 <Eye size={16} />
                 <File size={16} />

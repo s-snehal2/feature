@@ -10,6 +10,8 @@ export const headerData = [
     hold: "0",
     sold: "0",
     bal: "2511",
+    fileName: "Acqua-Bella.pdf",
+    fileUrl: "",
   },
 ];
 
