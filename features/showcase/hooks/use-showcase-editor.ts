@@ -36,7 +36,6 @@ type PreviewState = {
 
 type Options = {
   open: boolean;
-  onChanged?: () => void;
 };
 
 /**
@@ -44,7 +43,7 @@ type Options = {
  * selection, the pending upload queue, the stored image list, and the upload /
  * delete flows. The dialog component is a thin view over this.
  */
-export function useShowcaseEditor({ open, onChanged }: Options) {
+export function useShowcaseEditor({ open }: Options) {
   const colors = useMemo(() => getColors(), []);
 
   const [color, setColor] = useState("");
@@ -339,7 +338,6 @@ export function useShowcaseEditor({ open, onChanged }: Options) {
       return current.filter((item) => item.status === "error");
     });
 
-    onChanged?.();
   };
 
   const handleDelete = (image: StoredImage) => setDeleteTarget(image);
@@ -358,7 +356,6 @@ export function useShowcaseEditor({ open, onChanged }: Options) {
         current.filter((entry) => entry.name !== image.name),
       );
       toast.success(`Deleted ${image.name}`);
-      onChanged?.();
     } catch (error) {
       console.error(error);
       toast.error("Could not delete the file.");
@@ -410,7 +407,6 @@ export function useShowcaseEditor({ open, onChanged }: Options) {
       setRearrangeMode(false);
       setDraftOrder([]);
       toast.success("Image order updated.");
-      onChanged?.();
     } catch (error) {
       console.error(error);
       toast.error("Could not reorder images.");

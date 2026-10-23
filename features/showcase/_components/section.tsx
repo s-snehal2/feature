@@ -1,16 +1,12 @@
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
-
 type SectionProps = {
   icon: LucideIcon;
   title: string;
   description?: string;
   badge?: ReactNode;
   actions?: ReactNode;
-  className?: string;
-  contentClassName?: string;
   children: ReactNode;
 };
 
@@ -20,17 +16,10 @@ export function Section({
   description,
   badge,
   actions,
-  className,
-  contentClassName,
   children,
 }: SectionProps) {
   return (
-    <section
-      className={cn(
-        "bg-card text-card-foreground rounded-xl border shadow-sm",
-        className
-      )}
-    >
+    <section className="bg-card text-card-foreground rounded-xl border shadow-sm">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
         <div className="flex min-w-0 items-center gap-3">
           <span className="bg-muted text-muted-foreground flex size-8 shrink-0 items-center justify-center rounded-lg">
@@ -52,7 +41,7 @@ export function Section({
           <div className="flex shrink-0 items-center gap-1">{actions}</div>
         ) : null}
       </header>
-      <div className={cn("p-4", contentClassName)}>{children}</div>
+      <div className="p-4">{children}</div>
     </section>
   );
 }

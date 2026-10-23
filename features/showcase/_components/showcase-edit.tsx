@@ -24,10 +24,9 @@ import { UploadControls } from "./upload-controls";
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onChanged?: () => void;
 };
 
-export default function ShowcaseEdit({ open, onOpenChange, onChanged }: Props) {
+export default function ShowcaseEdit({ open, onOpenChange }: Props) {
   const {
     colors,
     color,
@@ -65,7 +64,7 @@ export default function ShowcaseEdit({ open, onOpenChange, onChanged }: Props) {
     cancelRearrange,
     moveStored,
     saveRearrange,
-  } = useShowcaseEditor({ open, onChanged });
+  } = useShowcaseEditor({ open });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
