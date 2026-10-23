@@ -1,11 +1,23 @@
 export function supabaseUrl(): string {
-  return process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+  if (!url) {
+    throw new Error("Missing environment variable: NEXT_PUBLIC_SUPABASE_URL");
+  }
+
+  return url;
 }
 
 export function supabaseKey(): string {
-  return (
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+  const key =
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
-    ""
-  );
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+
+  if (!key) {
+    throw new Error(
+      "Missing Supabase key: set NEXT_PUBLIC_SUPABASE_ANON_KEY (or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY).",
+    );
+  }
+
+  return key;
 }
