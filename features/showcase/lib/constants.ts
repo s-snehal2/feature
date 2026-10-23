@@ -5,16 +5,15 @@ import type { GalleryOption } from "../types";
  * UPPERCASE and spaces are converted to "-" when building a filename.
  */
 export const galleryOptions: GalleryOption[] = [
-  { color: "EXOTIC", quality: "ACQUA BELLA", quantity: 904 },
-  { color: "EXOTIC", quality: "ALPHINE WHITE", quantity: 789 },
-  { color: "WHITE", quality: "AMETHYST WHITE", quantity: 6576 },
+  { color: "EXOTIC", quality: "ACQUA BELLA" },
+  { color: "EXOTIC", quality: "ALPHINE WHITE" },
+  { color: "WHITE", quality: "AMETHYST WHITE" },
 ];
 
 export const STORAGE_BUCKET = "qual-info";
 export const STORAGE_FOLDER = "images";
 
 export const ALLOWED_IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "webp"] as const;
-export type AllowedImageExtension = (typeof ALLOWED_IMAGE_EXTENSIONS)[number];
 
 export const ALLOWED_IMAGE_MIME_TYPES = [
   "image/png",

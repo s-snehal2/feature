@@ -24,46 +24,6 @@ export function isAllowedImageFile(file: File): boolean {
   return extensionOk && mimeOk;
 }
 
-/** Drop any trailing allowed image extensions (handles doubled ".PNG.PNG"). */
-function stripTrailingImageExtensions(stem: string): string {
-  let value = stem;
-  for (;;) {
-    const dot = value.lastIndexOf(".");
-    if (dot === -1) return value;
-    const ext = value.slice(dot + 1).toLowerCase();
-    if (!(ALLOWED_IMAGE_EXTENSIONS as readonly string[]).includes(ext)) {
-      return value;
-    }
-    value = value.slice(0, dot);
-  }
-}
-
-/**
- * Normalise an uploaded filename into the canonical `COLOR-QUALITY-SERIALNO.EXT`
- * shape: separators (`_` / spaces / repeats) become a single "-", a doubled
- * extension is dropped, and the whole name is uppercased. Returns null when the
- * extension itself is not allowed.
- *
- * Example: "EXOTIC-ACQUA-BELLA_01.PNG.PNG" -> "EXOTIC-ACQUA-BELLA-01.PNG"
- */
-export function normalizeShowcaseFilename(rawName: string): string | null {
-  const dot = rawName.lastIndexOf(".");
-  if (dot === -1) return null;
-
-  const ext = rawName.slice(dot + 1).toLowerCase();
-  if (!(ALLOWED_IMAGE_EXTENSIONS as readonly string[]).includes(ext)) {
-    return null;
-  }
-
-  const stem = stripTrailingImageExtensions(rawName.slice(0, dot))
-    .trim()
-    .replace(/[-_\s]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .toUpperCase();
-
-  return stem ? `${stem}.${ext.toUpperCase()}` : null;
-}
-
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
